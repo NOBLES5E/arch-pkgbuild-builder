@@ -12,22 +12,23 @@ fi
 target=$1
 pkgname=$2
 command=$3
+workdir=$4
 
 # assumes that package files are in a subdirectory
 # of the same name as "pkgname", so this works well
 # with "aurpublish" tool
 
-if [[ ! -d $pkgname ]]; then
-    echo "$pkgname should be a directory."
+if [[ ! -d $workdir ]]; then
+    echo "$workdir should be a directory."
     exit 1
 fi
 
-if [[ ! -e $pkgname/PKGBUILD ]]; then
-    echo "$pkgname does not contain a PKGBUILD file."
+if [[ ! -e $workdir/PKGBUILD ]]; then
+    echo "$workdir does not contain a PKGBUILD file."
     exit 1
 fi
 
-pkgbuild_dir=$(readlink "$pkgname" -f) # nicely cleans up path, ie. ///dsq/dqsdsq/my-package//// -> /dsq/dqsdsq/my-package
+pkgbuild_dir=$(readlink "$workdir" -f) # nicely cleans up path, ie. ///dsq/dqsdsq/my-package//// -> /dsq/dqsdsq/my-package
 
 getfacl -p -R "$pkgbuild_dir" /github/home > /tmp/arch-pkgbuild-builder-permissions.bak
 
@@ -43,8 +44,6 @@ mkdir -p /github/home/.gnupg/
 echo "keyserver hkp://keyserver.ubuntu.com:80" | tee /github/home/.gnupg/gpg.conf
 
 cd "$pkgbuild_dir"
-
-pkgname="$(basename "$pkgbuild_dir")" # keep quotes in case someone passes in a directory path with whitespaces...
 
 install_deps() {
     # install make and regular package dependencies
