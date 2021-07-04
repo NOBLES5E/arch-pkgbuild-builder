@@ -12,7 +12,7 @@ fi
 target=$1
 pkgname=$2
 command=$3
-workdir=$4
+workdir=$5
 
 # assumes that package files are in a subdirectory
 # of the same name as "pkgname", so this works well
