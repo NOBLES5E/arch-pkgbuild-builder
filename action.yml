@@ -8,6 +8,10 @@ branding:
 inputs:
   pkgname:
     description: >-
+      package name
+    required: true
+  workdir:
+    description: >-
       Path to DIRECTORY where the PKGBUILD file is.
       Assumes the directory is the name of package, ie /path/to/pkgname/
     required: true
@@ -34,3 +38,4 @@ runs:
     - ${{ inputs.pkgname }}
     - ${{ inputs.command }}
     - ${{ inputs.debug }}
+    - ${{ inputs.workdir }}
